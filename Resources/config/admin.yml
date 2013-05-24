@@ -1,0 +1,73 @@
+services:
+    # Menu Root
+    msi_cmf_menu_root_admin:
+        class: %msi_cmf.menu_root.admin%
+        arguments: [ @msi_cmf.menu_root_manager ]
+        parent: msi_cmf.admin
+        tags:
+            - { name: msi.admin }
+        calls:
+            - [ addChild, [ @msi_cmf_menu_node_admin ] ]
+
+    msi_cmf.menu_root_manager:
+        class: Msi\CmfBundle\Manager\MenuManager
+        arguments: [ %msi_cmf.menu.class% ]
+        parent: msi_cmf.manager
+
+    # Menu Node
+    msi_cmf_menu_node_admin:
+        class: %msi_cmf.menu_node.admin%
+        arguments: [ @msi_cmf.menu_node_manager ]
+        parent: msi_cmf.admin
+        tags:
+            - { name: msi.admin }
+        calls:
+            - [ setParent, [ @msi_cmf_menu_root_admin ] ]
+
+    msi_cmf.menu_node_manager:
+        class: %msi_cmf.manager.class%
+        arguments: [ %msi_cmf.menu.class% ]
+        parent: msi_cmf.manager
+
+    # Page
+    msi_cmf_page_admin:
+        class: %msi_cmf.page.admin%
+        arguments: [ @msi_cmf.page_manager ]
+        parent: msi_cmf.admin
+        tags:
+            - { name: msi.admin }
+        calls:
+            - [addChild, [@msi_cmf_block_admin]]
+
+    msi_cmf.page_manager:
+        class: Msi\CmfBundle\Manager\PageManager
+        arguments: [ %msi_cmf.page.class% ]
+        parent: msi_cmf.manager
+
+    # Block
+    msi_cmf_block_admin:
+        class: %msi_cmf.block.admin%
+        arguments: [ @msi_cmf.page_block_manager ]
+        parent: msi_cmf.admin
+        tags:
+            - { name: msi.admin }
+        calls:
+            - [setParent, [@msi_cmf_page_admin]]
+
+    msi_cmf.page_block_manager:
+        class: %msi_cmf.manager.class%
+        arguments: [ %msi_cmf.block.class% ]
+        parent: msi_cmf.manager
+
+    # Site
+    msi_cmf_site_admin:
+        class: %msi_cmf.site.admin%
+        arguments: [ @msi_cmf.site_manager ]
+        parent: msi_cmf.admin
+        tags:
+            - { name: msi.admin }
+
+    msi_cmf.site_manager:
+        class: %msi_cmf.manager.class%
+        arguments: [ %msi_cmf.site.class% ]
+        parent: msi_cmf.manager

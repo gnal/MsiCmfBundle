@@ -1,0 +1,83 @@
+entity:
+    MenuRoot: Menu|Menus
+    MenuNode: Item de menu|Items de menu
+    Page: Page|Pages
+    Block: Bloc|Blocs
+    Site: Site|Sites
+
+locale:
+    fr: Français
+    en: English
+
+Dashboard: Tableau de bord
+Language:: Langage :
+Add: Ajouter
+Edit: Modifier
+Save: Enregistrer
+Save and close: Enregistrer et Fermer
+Save and add: Enregistrer et Ajouter
+Delete: Supprimer
+Show: Afficher
+Cancel: Annuler
+Back: Retour
+Save Changes: Sauvegarder les modifications
+View site: Voir le Site
+index_title: Liste des %label%
+Reset: Réinitialiser
+Search: Rechercher
+Profile: Profil
+Log out: Fermer la session
+Français: English
+Filter: Filtre
+success!: Succès!
+error!: Erreur!
+Updatedat: Dernière mise à jour
+Createdat: Créé
+Download: Télécharger
+Enabled: Activé
+View file: Voir le fichier
+Update: Mettre à jour
+Update and close: Mettre à jour et fermer
+Create and close: Créer et fermer
+Create and add: Créer et ajouter
+Main: Principal
+Advanced: Avancé
+All: Tout
+None: Aucun
+Default language: Langage par défaut
+Available languages: Langages disponibles
+Languages: Langages
+Isdefault: Site par défaut
+Yes: Oui
+No: Non
+text: Texte
+action: Action
+template: Template
+menu: Menu
+Dashboard: Tableau de bord
+Locked: Barré
+Roles: Rôles
+Banned: Banni
+Path: Chemin
+Showtitle: Afficher le titre
+Link: Lien
+
+Home: Accueil
+Title: Titre
+Template: Gabarit
+Metakeywords: Mots clés
+Metadescription: Description
+Name: Nom
+Order: Ordre
+Content: Contenu
+Security: Sécurité
+Lastlogin: Dernière connexion
+Published: Publié
+Issuperadmin: Is Super Admin
+Targetblank: Ouvrir dans un nouvel onglet
+Back to list: Retour à la liste
+Settings: Paramètres
+Open in a new tab: Ouvrir dans un nouvel onglet
+Groups: Groupes
+Body: Contenu
+Whitelist: Liste blanche

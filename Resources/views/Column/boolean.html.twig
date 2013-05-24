@@ -1,0 +1,11 @@
+{% if column.options.toggle %}
+<a href="#" class="msi_cmf_admin_change" data-url="{{ admin.genUrl('toggle', {'id': column.object.id, 'field': column.name}) }}" data-icon-true="{{ column.options.icon_true }}" data-icon-false="{{ column.options.icon_false }}" data-badge-true="{{ column.options.badge_true }}" data-badge-false="{{ column.options.badge_false }}">
+{% endif %}
+    {% if column.value %}
+        <span class="badge {{ column.options.badge_true }}"><span><i class="{{ column.options.icon_true }} icon-white"><span class="hide">1</span></i></span></span>
+    {% else %}
+        <span class="badge {{ column.options.badge_false }}"><span><i class="{{ column.options.icon_false }} icon-white"><span class="hide">0</span></i></span></span>
+    {% endif %}
+{% if column.options.toggle %}
+</a>
+{% endif %}

@@ -1,0 +1,15 @@
+msi_cmf_dashboard:
+    pattern: /admin/
+    defaults: { _controller: MsiCmfBundle:Default:dashboard }
+
+msi_cmf_limit:
+    pattern: /change-limit
+    defaults: { _controller: MsiCmfBundle:Default:limit }
+
+msi_cmf_menu_node_admin_promote:
+    pattern: /admin/menu_node/{id}/promote
+    defaults: { _controller: MsiCmfBundle:Admin/MenuNode:promote, _admin: msi_cmf_menu_node_admin }
+
+msi_cmf_menu_node_admin_demote:
+    pattern: /admin/menu_node/{id}/demote
+    defaults: { _controller: MsiCmfBundle:Admin/MenuNode:demote, _admin: msi_cmf_menu_node_admin }

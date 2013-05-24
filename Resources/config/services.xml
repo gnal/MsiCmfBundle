@@ -1,0 +1,97 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="msi_cmf.request_listener.class">Msi\CmfBundle\EventListener\RequestListener</parameter>
+        <parameter key="msi_cmf.manager.class">Msi\CmfBundle\Manager\Manager</parameter>
+    </parameters>
+
+    <services>
+        <service id="msi_cmf.request_listener" class="%msi_cmf.request_listener.class%" scope="request">
+            <argument type="service" id="msi_cmf.site_provider" />
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
+        </service>
+
+        <service id="msi_cmf.timestampable_listener" class="Msi\CmfBundle\Doctrine\Extension\Timestampable\TimestampableListener">
+            <tag name="doctrine.event_subscriber"></tag>
+        </service>
+
+        <service id="msi_cmf.translatable_listener" class="Msi\CmfBundle\Doctrine\Extension\Translatable\TranslatableListener">
+            <argument type="service" id="service_container" />
+            <tag name="doctrine.event_subscriber"></tag>
+        </service>
+
+        <service id="msi_cmf.uploadable_listener" class="Msi\CmfBundle\Doctrine\Extension\Uploadable\UploadableListener" public="false">
+            <tag name="doctrine.event_subscriber"></tag>
+        </service>
+
+        <service id="msi_cmf.admin.form.handler" class="Msi\CmfBundle\Form\Handler\AdminFormHandler" scope="request">
+            <argument type="service" id="request" />
+        </service>
+
+        <service id="msi_cmf.filter.form.handler" class="Msi\CmfBundle\Form\Handler\FilterFormHandler" scope="request">
+            <argument type="service" id="request" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="msi_cmf.cmf_loader" class="Msi\CmfBundle\Routing\CmfLoader">
+            <argument type="service" id="service_container" />
+            <tag name="routing.loader"></tag>
+        </service>
+
+        <service id="msi_cmf.manager" class="%msi_cmf.manager.class%" abstract="true">
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager" />
+            </call>
+        </service>
+
+        <service id="msi_cmf.admin" class="Msi\CmfBundle\Admin\Admin" abstract="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="msi_cmf.cmf.twig.extension" class="Msi\CmfBundle\Twig\Extension\CmfExtension" public="false">
+            <tag name="twig.extension" />
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="msi_cmf.block.twig.extension" class="Msi\CmfBundle\Twig\Extension\BlockExtension" public="false">
+            <tag name="twig.extension" />
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="msi_cmf.pager.factory" class="Msi\CmfBundle\Pager\PagerFactory" />
+
+        <service id="msi_cmf.pager.twig.extension" class="Msi\CmfBundle\Twig\Extension\PagerExtension" public="false">
+            <argument type="service" id="service_container" />
+            <tag name="twig.extension" />
+        </service>
+
+
+        <service id="msi_cmf.block.handler" class="Msi\CmfBundle\Block\BlockHandler" abstract="true">
+            <argument>%msi_cmf.block.slots%</argument>
+        </service>
+
+        <service id="msi_cmf.text.block.handler" class="Msi\CmfBundle\Block\Handler\TextBlockHandler" parent="msi_cmf.block.handler">
+        </service>
+
+        <service id="msi_cmf.action.block.handler" class="Msi\CmfBundle\Block\Handler\ActionBlockHandler" parent="msi_cmf.block.handler">
+            <argument>%msi_cmf.block.actions%</argument>
+            <argument type="service" id="http_kernel" />
+        </service>
+
+        <service id="msi_cmf.template.block.handler" class="Msi\CmfBundle\Block\Handler\TemplateBlockHandler" parent="msi_cmf.block.handler">
+            <argument>%msi_cmf.block.templates%</argument>
+            <argument type="service" id="templating" />
+        </service>
+
+        <service id="msi_cmf.settings.form.type" class="Msi\CmfBundle\Form\Type\SettingsType">
+            <tag name="form.type" alias="msi_block_settings" />
+        </service>
+    </services>
+
+</container>

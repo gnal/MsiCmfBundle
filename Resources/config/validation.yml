@@ -1,0 +1,39 @@
+FOS\UserBundle\Model\User:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: username
+    properties:
+        username:
+            - NotBlank: ~
+        email:
+            - NotBlank: ~
+            - Email: ~
+
+FOS\UserBundle\Model\Group:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+    properties:
+        name:
+            - NotBlank: ~
+
+Msi\CmfBundle\Entity\MenuTranslation:
+    properties:
+        name:
+            - NotBlank: ~
+
+Msi\CmfBundle\Entity\Page:
+    properties:
+        template:
+            - NotBlank: ~
+
+Msi\CmfBundle\Entity\PageTranslation:
+    properties:
+        title:
+            - NotBlank: ~
+
+Msi\CmfBundle\Entity\Site:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: host
+    properties:
+        host:
+            - NotBlank: ~

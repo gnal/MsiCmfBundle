@@ -1,0 +1,17 @@
+{% set leMenu = column.object %}
+{% if leMenu.page %}
+    {% if leMenu.page.home %}
+        {% set url = path('msi_page_home') %}
+    {% elseif leMenu.page.route %}
+        {% set url = path(leMenu.page.route) %}
+    {% else %}
+        {% set url = path('msi_page_show', {'slug': leMenu.page.translation.slug}) %}
+    {% endif %}
+{% else %}
+    {% if leMenu.translation.realRoute %}
+        {% set url = path(leMenu.translation.realRoute) %}
+    {% else %}
+        {% set url = leMenu.translation.route %}
+    {% endif %}
+{% endif %}
+<a target="_blank" href="{{ url }}">{{ url }}</a>

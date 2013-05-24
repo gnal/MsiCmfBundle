@@ -1,0 +1,28 @@
+{% extends 'MsiCmfBundle::layout.html.twig' %}
+
+{% block title %}{{ 'Edit'|trans }} {{ admin.label }}{% endblock title %}
+
+{% block content %}
+    <form novalidate class="form-horizontal" action="{{ admin.genUrl('edit', {'id': admin.object.id}) }}" method="POST" {{ form_enctype(form) }}>
+        {% include admin.getOption('form_template') %}
+        <div class="form-actions" style="margin-bottom: 0;">
+            {% include 'MsiCmfBundle:Admin:edit_form_actions.html.twig' %}
+        </div>
+    </form>
+{% endblock %}
+
+{% block js %}
+{{ parent() }}
+{% include admin.container.getParameter('msi_cmf.tiny_mce') %}
+<script>
+    $('button.alt').on('click', function() {
+        var $form = $(this).closest('form');
+        $form.attr('action', $.parameterize($form.attr('action'), {'alt': true}));
+    });
+</script>
+{% endblock js %}
+
+{% block actions %}
+{# could put delete button here #}
+{#<a onclick="return confirm('Are you sure you want to delete this entry?');" class="btn pull-right" href="{{ admin.genUrl('delete', {'id': admin.object.id}) }}"><i class="icon-remove"></i></a>#}
+{% endblock actions %}

@@ -1,0 +1,13 @@
+{% set options = column.options %}
+
+{% for i in 0..row.lvl %}
+    {% if i != 0 %}
+        <i class="icon-minus"></i>
+    {% endif %}
+{% endfor %}
+
+{% if options.truncate %}
+    {{ column.value|truncate(options.truncate_length, options.truncate_preserve, options.truncate_separator) }}
+{% else %}
+    {{ column.value }}
+{% endif %}

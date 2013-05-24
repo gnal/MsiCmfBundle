@@ -1,0 +1,78 @@
+entity:
+    MenuRoot: Menu|Menus
+    MenuNode: Menu item|Menu items
+    Page: Page|Pages
+    Block: Block|Blocks
+    Site: Site|Sites
+
+locale:
+    fr: Français
+    en: English
+
+Dashboard: Dashboard
+Language:: Language:
+Add: Add
+Edit: Edit
+Save: Save
+Save and close: Save and Close
+Save and add: Save and Add
+Delete: Delete
+Show: Show
+Cancel: Cancel
+Back: Back
+Save Changes: Save changes
+View site: View Site
+index_title: %label% List
+Reset: Reset
+Search: Search
+Profile: Profile
+Log out: Log out
+Français: Français
+Filter: Filter
+success!: Success!
+error!: Error!
+Updatedat: Last update
+Createdat: Created
+Download: Download
+Enabled: Enabled
+View file: View file
+Update: Update
+Create: Create
+All: All
+None: None
+Default language: Default language
+Available languages: Available languages
+Languages: Languages
+Isdefault: Default site
+Yes: Yes
+No: No
+text: Text
+action: Action
+template: Template
+menu: Menu
+Dashboard: Dashboard
+Locked: Locked
+Roles: Roles
+Banned: Banned
+Path: Path
+Showtitle: Show title
+Link: Link
+
+Home: Home
+Title: Title
+Template: Template
+Metakeywords: Keywords
+Metadescription: Description
+Name: Name
+Order: Order
+Content: Content
+Security: Security
+Lastlogin: Last login
+Published: Published
+Issuperadmin: Is Super Admin
+Targetblank: Open in a new tab
+Settings: Settings
+Open in a new tab: Open in a new tab
+Groups: Groups
+Body: Body
+Whitelist: Whitelist

@@ -1,0 +1,20 @@
+<ul class="breadcrumb">
+<li>
+    <a href="{{ path('msi_cmf_dashboard') }}">{{ 'Home'|trans }}</a>
+    <span class="divider">&rarr;</span>
+</li>
+{% for crumb in crumbs %}
+    <li{% if crumb.class is defined %} class="{{ crumb.class }}"{% endif %}>
+        {% if loop.index != 1 %}
+            {% if crumb.class is not defined or (crumb.class is defined and crumb.class != 'pull-right') %}
+                <span class="divider">&rarr;</span>
+            {% endif %}
+        {% endif %}
+        {% if crumb.path %}
+            <a href="{{ crumb.path }}">{{ crumb.label|capitalize }}</a>
+        {% else %}
+            {{ crumb.label|capitalize }}
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>

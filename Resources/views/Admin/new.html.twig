@@ -1,0 +1,27 @@
+{% extends 'MsiCmfBundle::layout.html.twig' %}
+
+{% block title %}{{ 'Add'|trans }} {{ admin.getLabel() }}{% endblock title %}
+
+{% block page_title %}
+    {{ 'Add'|trans }} {{ admin.getLabel() }}
+{% endblock %}
+
+{% block content %}
+    <form novalidate class="form-horizontal" action="{{ admin.genUrl('new') }}" method="POST" {{ form_enctype(form) }}>
+        {% include admin.getOption('form_template') %}
+        <div class="form-actions" style="margin-bottom: 0;">
+            {% include 'MsiCmfBundle:Admin:new_form_actions.html.twig' %}
+        </div>
+    </form>
+{% endblock %}
+
+{% block js %}
+{{ parent() }}
+{% include admin.container.getParameter('msi_cmf.tiny_mce') %}
+<script>
+    $('button.alt').on('click', function() {
+        var $form = $(this).closest('form');
+        $form.attr('action', $.parameterize($form.attr('action'), {'alt': true}));
+    });
+</script>
+{% endblock js %}

@@ -1,0 +1,140 @@
+{% extends 'MsiCmfBundle::layout.html.twig' %}
+
+{% block title %}
+{{ admin.getLabel(2) }}
+{% endblock title %}
+
+{% block sidebar %}
+{% if filterForm is defined %}
+    <h2><small>{{ 'Filter'|trans }}</small></h2>
+    <form novalidate method="GET" class="form-horizontal" action="{{ admin.genUrl('list') }}">
+        {% form_theme filterForm 'MsiCmfBundle:Form:form.html.twig' %}
+        {{ form_widget(filterForm) }}
+        <button type="submit" class="btn btn-primary"><i class="icon-white icon-filter"></i> {{ 'Filter'|trans }}</button>
+        <a class="btn btn-link" href="{{ admin.genUrl('list', {'parentId': app.request.query.get('parentId')}, false) }}">{{ 'Cancel'|trans }}</a>
+    </form>
+{% endif %}
+{% if admin.getOption('uploadify') %}
+    <a class="btn" href="javascript:$('#file_upload').uploadify('upload','*')">GO</a>
+    <input type="file" name="file_upload" id="file_upload" />
+{% endif %}
+{% endblock sidebar %}
+
+{% block actions %}
+{% if admin.isGranted('create') %}
+    <a href="{{ admin.genUrl('new') }}" class="btn btn-success"><i class="icon-white icon-plus"></i> {{ 'Add'|trans }}</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{# Search #}
+<form novalidate class="form-inline pull-right" method="GET" action="{{ admin.genUrl('list') }}">
+    {% if admin.hasParent() %}<input type="hidden" value="{{ app.request.query.get('parentId') }}" name="parentId">{% endif %}
+    <input class="input-xlarge" value="{{ app.request.query.get('q') }}" name="q" type="text">
+    <button type="submit" class="btn btn-primary"><i class="icon-white icon-search"></i> {{ 'Search'|trans }}</button>
+    <a class="btn btn-link" href="{{ admin.genUrl('list', {'parentId': app.request.query.get('parentId')}, false) }}">{{ 'Cancel'|trans }}</a>
+</form>
+{# Limit #}
+<form id="limitForm" novalidate class="pull-left form-search" method="POST" action="{{ path('msi_cmf_limit') }}">
+    <select name="limit">
+        <option {% if app.session.get('limit') == 10 %}selected=selected{% endif %} value="10">10</option>
+        <option {% if app.session.get('limit', 25) == 25 %}selected=selected{% endif %} value="25">25</option>
+        <option {% if app.session.get('limit') == 50 %}selected=selected{% endif %} value="50">50</option>
+        <option {% if app.session.get('limit') == 100 %}selected=selected{% endif %} value="100">100</option>
+    </select>
+</form>
+{# Table #}
+{% include 'MsiCmfBundle:Grid:grid_horizontal.html.twig' with {'grid': admin.getGrid()} %}
+{% endblock %}
+
+{% block js %}
+{{ parent() }}
+{% if admin.grid.sortable %}
+<script>
+(function($) {
+    "use strict";
+    // Return a helper with preserved width of cells
+    var fixHelper = function(e, ui) {
+        ui.children().each(function() {
+            var $this = $(this);
+            $this.width($this.width());
+        });
+        return ui;
+    };
+
+    // fill empty tr created by jquery ui
+
+    var nbColumn = $('table.table').children().first().children().children().length;
+    var placeholderFiller = '';
+
+    for (var i = 0; i < nbColumn; i++) {
+        placeholderFiller += '<td>&nbsp;</td>';
+    };
+
+    $("table.sortable tbody").sortable({
+        helper: fixHelper,
+        handle: $('td'),
+        distance: 30,
+        containment: $('table'),
+        placeholder: "ui-state-highlight",
+        forcePlaceholderSize: true,
+        start: function (event, ui) {
+            ui.placeholder.html(placeholderFiller);
+        },
+    }).disableSelection();
+})(jQuery);
+(function($) {
+    "use strict";
+    var $table = $('table.sortable');
+
+    $table.on('sortstop', function(e, ui) {
+        var next = null,
+            prev = null;
+
+        if (typeof $(ui.item).next('tr').attr('id') !== 'undefined') {
+            next = $(ui.item).next('tr').attr('id').substr(2);
+        }
+
+        if (typeof $(ui.item).prev('tr').attr('id') !== 'undefined') {
+            prev = $(ui.item).prev('tr').attr('id').substr(2);
+        }
+
+        $.ajax("{{ admin.genUrl('sort') }}", {
+            data: {
+                'current': $(ui.item).attr('id').substr(2),
+                'next': next,
+                'prev': prev
+            },
+        });
+    });
+})(jQuery);
+</script>
+{% endif %}
+{% if admin.getOption('uploadify') %}
+<script src="{{ asset('bundles/msicmf/vendor/uploadify/jquery.uploadify.min.js') }}"></script>
+<script>
+$(function() {
+    $('#file_upload').uploadify({
+        swf: "{{ asset('bundles/msicmf/vendor/uploadify/uploadify.swf') }}",
+        uploader: "{{ admin.genUrl('new') }}",
+        auto: false,
+        buttonText: 'CHOOSE FILE',
+        fileObjName: 'file',
+        buttonClass: 'btn',
+        width: 119,
+        height: 30,
+        onQueueComplete: function() {
+            window.location = "{{ admin.genUrl('list') }}";
+        }
+    });
+});
+</script>
+{% endif %}
+{% endblock js %}
+
+{% block css %}
+{% if uploadify is defined %}
+<link rel="stylesheet" href="{{ asset('bundles/msicmf/vendor/uploadify/uploadify.css') }}" />
+{% endif %}
+{{ parent() }}
+{% endblock css %}

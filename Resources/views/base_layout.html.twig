@@ -1,0 +1,98 @@
+{% extends 'MsiCmfBundle:Page:layout.html.twig' %}
+
+{% block css %}
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ asset('bundles/msicmf/vendor/chosen/chosen.css') }}">
+<link rel="stylesheet" href="{{ asset('bundles/msicmf/vendor/eternicode-bootstrap-datepicker/css/datepicker.css') }}">
+<link rel="stylesheet" href="{{ asset('bundles/msicmf/css/admin.css') }}">
+{% endblock %}
+
+{% block js %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+<script src="{{ asset('bundles/msicmf/vendor/chosen/chosen.jquery.min.js') }}"></script>
+<script src="{{ asset('bundles/msicmf/vendor/eternicode-bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
+<script src="{{ asset('bundles/msicmf/vendor/eternicode-bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js') }}"></script>
+<script src="{{ asset('bundles/msicmf/js/admin.js') }}"></script>
+<script>
+$("select.chosenify").chosen({placeholder_text_single: ' ', placeholder_text_multiple: ''});
+$('.datepicker').datepicker({
+    format: 'dd-mm-yyyy',
+    autoclose: true,
+    language: '{{ app.request.locale }}'
+});
+</script>
+{{ parent() }}
+{% endblock %}
+
+{% block body %}
+<div class="navbar navbar-fixed-top navbar-inverse">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            {% if block('brand')|length > 0 %}
+                <a class="brand" href="{{ path('msi_cmf_dashboard') }}">{{ block('brand') }}</a>
+            {% endif %}
+            {% if is_granted("ROLE_ADMIN") %}
+                {{ knp_menu_render('MsiCmfBundle:MenuBuilder:adminMenu', {'allow_safe_labels': true, 'depth': 3, 'currentClass': 'active'}) }}
+                <ul class="nav pull-right">
+                    {#<li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ app.user.username }} <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('fos_user_profile_show') }}"><i class="icon-user"></i> {{ 'Profil'|trans }}</a></li>
+                            <li><a href="{{ path('fos_user_security_logout') }}"><i class="icon-off"></i> {{ 'Logout'|trans }}</a></li>
+                        </ul>
+                    </li>#}
+                    <li><a title="{{ 'View site'|trans }}" target="_blank" href="{{ path('msi_page_home') }}"><i class="icon-white icon-share-alt"></i></a></li>
+                    <li><a title="{{ 'Profil'|trans }}" href="{{ path('fos_user_profile_show') }}"><i class="icon-white icon-user"></i></a></li>
+                    <li><a title="{{ 'Logout'|trans }}" href="{{ path('fos_user_security_logout') }}"><i class="icon-white icon-off"></i></a></li>
+                </ul>
+                <p class="pull-right navbar-text">{{ app.user.username }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="container-fluid" style="padding: 20px;">
+    <div id="main">
+        <div id="sidebar">
+            {{ msi_block_render('admin_sidebar_top', page) }}
+            {% block sidebar %}{% endblock sidebar %}
+            {{ msi_block_render('admin_sidebar_bottom', page) }}
+        </div>
+
+        <div id="content">
+            {% if block('title')|length %}
+            <div class="row-fluid">
+                <div class="span6">
+                    <h2>{{ block('title') }}{{ block('title_suffix') }}</h2>
+                </div>
+                <div class="span6">
+                    {% if block('actions')|length > 0 %}
+                        <div class="pull-right btn-toolbar">{{ block('actions') }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if admin is defined %}
+            <div class="row-fluid">
+                <div class="span12">
+                    {% block breadcrumb %}
+                        {% include 'MsiCmfBundle:Default:breadcrumb.html.twig' with {'crumbs': admin.buildBreadcrumb } %}
+                    {% endblock breadcrumb %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="row-fluid">
+                <div class="span12">
+                    {{ msi_block_render('admin_content_top', page) }}
+                    {{ block('page_content') }}
+                    {{ msi_block_render('admin_content_bottom', page) }}
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+{% endblock %}

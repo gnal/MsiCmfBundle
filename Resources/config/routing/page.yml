@@ -1,0 +1,7 @@
+msi_page_home:
+    pattern: /{_locale}/
+    defaults: { _controller: MsiCmfBundle:Page:show }
+
+msi_page_show:
+    pattern: /{_locale}/{slug}
+    defaults: { _controller: MsiCmfBundle:Page:show, slug: ~ }

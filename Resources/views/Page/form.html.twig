@@ -1,0 +1,35 @@
+{% form_theme form 'MsiCmfBundle:Form:form.html.twig' %}
+
+<ul id="myTab" class="nav nav-tabs">
+    <li class="active"><a href="#general" data-toggle="tab">{{ 'Main'|trans }}</a></li>
+    <li><a href="#seo" data-toggle="tab">{{ 'SEO'|trans }}</a></li>
+    <li><a href="#advanced" data-toggle="tab">{{ 'Advanced'|trans }}</a></li>
+</ul>
+
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="general">
+        {% if admin.container.parameter('msi_cmf.multisite') %}{{ form_row(form.site) }}{% endif %}
+        {{ form_row(form.template) }}
+        {{ form_row(form.home) }}
+        {{ form_row(form.showTitle) }}
+        {% for translation in form.translations %}
+            <h6 style="margin-bottom:20px;border-bottom:1px solid #eeeeee;">{{ translation.get('value').locale|upper }}</h6>
+            {{ form_row(translation.published) }}
+            {{ form_row(translation.title) }}
+        {% endfor %}
+    </div>
+    <div class="tab-pane fade" id="seo">
+        {% for translation in form.translations %}
+            <h6 style="margin-bottom:20px;border-bottom:1px solid #eeeeee;">{{ translation.get('value').locale|upper }}</h6>
+            {{ form_row(translation.metaKeywords) }}
+            {{ form_row(translation.metaDescription) }}
+        {% endfor %}
+    </div>
+    <div class="tab-pane fade" id="advanced">
+        {{ form_row(form.route) }}
+        {{ form_row(form.css) }}
+        {{ form_row(form.js) }}
+    </div>
+</div>
+
+{{ form_rest(form) }}

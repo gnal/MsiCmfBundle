@@ -1,0 +1,55 @@
+<table class="{% if grid.sortable %}sortable {% endif %}table table-bordered table-striped">
+    {# Head #}
+    <thead>
+        <tr>
+        {% if admin.isTranslatable and admin.isTranslationField('published') %}
+            <th>{{ 'Published'|trans }}</th>
+        {% endif %}
+        {% for column in grid.columns %}
+            <th>{{ column.get('label')|capitalize|trans }}</th>
+        {% endfor %}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <th>ID</th>
+        {% endif %}
+        </tr>
+    </thead>
+    {# Body #}
+    <tbody>
+    {% for row in grid.rows %}
+        <tr id="tr{{ row.id }}">
+            {% if admin.isTranslatable and admin.isTranslationField('published') %}
+                <td style="text-align:center;" class="span1" id="td{{ loop.index }}{{ row.id }}">
+                    <div style="white-space: nowrap;">
+                    {% for locale in app_locales %}
+                        <a href="#" class="msi_cmf_admin_change" data-url="{{ admin.genUrl('toggle', {'_method': 'PUT', 'locale': locale, 'id': row.id, 'field': 'published'}) }}" data-icon-true="icon-ok" data-icon-false="icon-ok" data-badge-true="badge-success" data-badge-false="">
+                            {% if row.getTranslation(locale).published %}
+                                <span class="badge badge-success">{{ locale|upper }} <span><i class="icon-ok icon-white"><span class="hide">1</span></i></span></span>
+                            {% else %}
+                                <span class="badge">{{ locale|upper }} <span><i class="icon-ok icon-white"><span class="hide">0</span></i></span></span>
+                            {% endif %}
+                        </a>
+                    {% endfor %}
+                    </div>
+                </td>
+            {% endif %}
+            {% for column in grid.columns %}
+                <td {% for attrname,attrvalue in column.options.attr %}{{attrname}}="{{attrvalue}}" {% endfor %}id="td{{ loop.index~row.id }}">
+                {% include 'MsiCmfBundle:Column:'~column.type~'.html.twig' with {'i': loop.index, 'column': column.resolveRow(row)} %}
+                </td>
+            {% endfor %}
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <td class="span1">
+                {{ row.id }}
+            </td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr><td colspan={{ grid.columns|length + 2 }}></td></tr>
+    </tfoot>
+</table>
+{{ msi_pager_render(pager) }}
+{#<p class="pull-left" style="margin-bottom: 20px;">
+    <small>Showing {{ pager.from|number_format }} to {{ pager.to|number_format }} of {{ pager.count|number_format }} entries</small>
+</p>#}

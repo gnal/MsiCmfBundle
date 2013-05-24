@@ -1,0 +1,3 @@
+{% if column.object.id != app.user.id and column.object.locked != true %}
+<a class="btn" href="{{ path('msi_page_home', {'_switch_user': column.object.username }) }}"><i class="icon-user"></i></a>
+{% endif %}

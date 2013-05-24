@@ -1,0 +1,99 @@
+parameters:
+    msi_cmf.manager.class: Msi\CmfBundle\Doctrine\Manager
+
+services:
+    msi_cmf.admin:
+        class: Msi\CmfBundle\Admin\Admin
+        abstract: true
+        calls:
+            - [ setContainer, [ @service_container ] ]
+
+    msi_cmf.manager:
+        class: %msi_cmf.manager.class%
+        abstract: true
+        calls:
+            - [ setEntityManager, [ @doctrine.orm.default_entity_manager ] ]
+
+    msi_cmf.provider:
+        class: Msi\CmfBundle\Provider\Provider
+        scope: request
+        arguments: [ @request, @msi_cmf.site_manager ]
+
+    msi_cmf.bouncer:
+        class: Msi\CmfBundle\Bouncer\Bouncer
+        arguments: [ @security.context ]
+
+    msi_cmf.admin_loader:
+        class: Msi\CmfBundle\Routing\CmfLoader
+        arguments: [ @service_container ]
+        tags:
+            - { name: routing.loader }
+
+    msi_cmf.admin.form.handler:
+        class: Msi\CmfBundle\Form\Handler\AdminFormHandler
+        scope: request
+        arguments: [ @request, @event_dispatcher ]
+
+    msi_cmf.filter.form.handler:
+        class: Msi\CmfBundle\Form\Handler\FilterFormHandler
+        scope: request
+        arguments: [ @request ]
+
+    msi_cmf.admin.twig.extension:
+        class: Msi\CmfBundle\Twig\Extension\CmfExtension
+        arguments: [ @service_container ]
+        tags:
+            - { name: twig.extension }
+
+    msi_cmf.pager.factory:
+        class: Msi\CmfBundle\Pager\PagerFactory
+
+    msi_cmf.request_listener:
+        class: Msi\CmfBundle\EventListener\RequestListener
+        scope: request
+        arguments: [ @msi_cmf.provider, @security.context ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    msi_cmf.timestampable_listener:
+        class: Msi\CmfBundle\Doctrine\Extension\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    msi_cmf.translatable_listener:
+        class: Msi\CmfBundle\Doctrine\Extension\Translatable\TranslatableListener
+        arguments: [ @service_container ]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    msi_cmf.uploadable_listener:
+        class: Msi\CmfBundle\Doctrine\Extension\Uploadable\UploadableListener
+        arguments: [ @msi_cmf.uploader ]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    msi_cmf.block.text:
+        class: Msi\CmfBundle\Block\Handler\TextBlockHandler
+
+    msi_cmf.block.action:
+        class: Msi\CmfBundle\Block\Handler\ActionBlockHandler
+        arguments: [ %msi_cmf.block.actions%, @http_kernel ]
+
+    msi_cmf.block.template:
+        class: Msi\CmfBundle\Block\Handler\TemplateBlockHandler
+        arguments: [ %msi_cmf.block.templates%, @templating ]
+
+    msi_cmf.block.menu:
+        class: Msi\CmfBundle\Block\Handler\MenuBlockHandler
+        arguments: [ @knp_menu.factory, @knp_menu.renderer.list, @msi_cmf.menu_root_manager ]
+
+    msi_cmf._voter:
+        class: Msi\CmfBundle\Security\Voter\AclVoter
+        arguments: [ @service_container ]
+        public: false
+        tags:
+            - { name: security.voter }
+
+    msi_cmf.uploader:
+        class: Msi\CmfBundle\Tools\Uploader
+        arguments: [@kernel]

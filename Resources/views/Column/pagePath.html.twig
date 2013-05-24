@@ -1,0 +1,11 @@
+{% if column.object.home %}
+    {% set url = path('msi_page_home') %}
+    {% set label = path('msi_page_home') %}
+{% elseif column.object.route %}
+    {% set url = '#' %}
+    {% set label = column.object.route %}
+{% else %}
+    {% set url = path('msi_page_show', {'slug': column.object.translation.slug}) %}
+    {% set label = path('msi_page_show', {'slug': column.object.translation.slug}) %}
+{% endif %}
+<a target="_blank" href="{{ url }}">{{ label }}</a>
