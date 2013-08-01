@@ -77,7 +77,7 @@ services:
 
     msi_cmf.block.action:
         class: Msi\CmfBundle\Block\Handler\ActionBlockHandler
-        arguments: [ %msi_cmf.block.actions%, @http_kernel ]
+        arguments: [ %msi_cmf.block.actions%, @fragment.handler ]
 
     msi_cmf.block.template:
         class: Msi\CmfBundle\Block\Handler\TemplateBlockHandler
