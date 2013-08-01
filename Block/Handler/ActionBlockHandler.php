@@ -34,7 +34,7 @@ class ActionBlockHandler extends BaseBlockHandler
             }
         }
 
-        return $this->fragmentHandler->render(new ControllerReference($settings['action']), 'inline', $options);
+        return $this->fragmentHandler->render(new ControllerReference($settings['action'], [], $options['query']));
     }
 
     public function buildForm(FormBuilder $builder)
