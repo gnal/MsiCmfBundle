@@ -1,13 +1,14 @@
 <?php
 
-namespace Msi\AdminBundle\Block\Handler;
+namespace Msi\CmfBundle\Block\Handler;
 
-use Msi\AdminBundle\Block\BaseBlockHandler;
-Symfony\Component\HttpKernel\Fragment\FragmentHandler
-use Msi\AdminBundle\Entity\Block;
-use Msi\AdminBundle\Entity\Page;
+use Msi\CmfBundle\Block\BaseBlockHandler;
+use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
+use Msi\CmfBundle\Entity\Block;
+use Msi\CmfBundle\Entity\Page;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\HttpKernel\Controller\ControllerReference;
 
 class ActionBlockHandler extends BaseBlockHandler
 {
@@ -33,7 +34,7 @@ class ActionBlockHandler extends BaseBlockHandler
             }
         }
 
-        return $this->fragmentHandler->render($settings['action'], $options);
+        return $this->fragmentHandler->render(new ControllerReference($settings['action']), 'inline', $options);
     }
 
     public function buildForm(FormBuilder $builder)
