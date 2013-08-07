@@ -24,7 +24,7 @@ class ActionBlockHandler extends BaseBlockHandler
     public function execute(Block $block, Page $page)
     {
         $settings = $block->getSettings();
-        $options = [];
+        $options['query'] = [];
 
         if (isset($settings['query'])) {
             $parts = explode('&', trim($settings['query']));
