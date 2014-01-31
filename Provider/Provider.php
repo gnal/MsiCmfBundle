@@ -30,7 +30,7 @@ class Provider
                     ['a.isDefault' => true]
                 )->getQuery()->execute();
                 if (!isset($site[0])) {
-                    throw new NotFoundHttpException('No site was found');
+                    throw new NotFoundHttpException('No site was found for host: '.$this->request->getHost());
                 }
                 $site = $site[0];
             }
