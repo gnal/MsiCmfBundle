@@ -54,7 +54,13 @@ class Uploader
             $this->removeUpload($entity);
         }
 
-        $entity->setFilename(uniqid(time()).'.'.$file->guessExtension());
+        if (method_exists($entity, 'getNewFilename')) {
+            $filename = $entity->getNewFilename();
+        } else {
+            $filename = uniqid(time());
+        }
+
+        $entity->setFilename($filename.'.'.$file->guessExtension());
     }
 
     public function postUpload(UploadableInterface $entity)

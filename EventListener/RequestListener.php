@@ -30,8 +30,8 @@ class RequestListener
                 return;
             }
 
-            if ($this->sc->getToken()->getUser()->getLocale()) {
-                $request->setLocale($this->sc->getToken()->getUser()->getLocale());
+            if (1) {
+                $request->setLocale('fr');
             } else if (!in_array($request->getLocale(), $this->provider->getSite()->getLocales())) {
                 $request->setLocale($this->provider->getSite()->getLocale());
             }

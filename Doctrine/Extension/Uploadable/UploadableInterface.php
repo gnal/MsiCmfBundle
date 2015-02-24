@@ -6,7 +6,7 @@ interface UploadableInterface
 {
     function getUploadDir();
 
-    function getPathname($prefix);
+    function getPathname($prefix = '');
 
     function processFile(\SplFileInfo $file);
 
